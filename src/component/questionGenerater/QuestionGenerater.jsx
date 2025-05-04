@@ -58,15 +58,12 @@ export default function GenerateQB() {
   const { setContent } = useQuestionActions();
   const { state } = useQuestionContext();
 
-  console.log(levels);
-  console.log(complexity);
-  console.log(state?.content.length);
-
   const handleGenerate = () => {
+    setContent(contextLocal);
     const payloadOFApiCall = {
       complexity: complexity ?? "Easy",
       levels: levels ?? ["L1"],
-      content: state?.content,
+      content: contextLocal,
     };
     //here generate prompts
 
@@ -75,6 +72,7 @@ export default function GenerateQB() {
     console.log("Generated Prompt:\n", prompt);
     setComplexity("");
     setLevels([]);
+    setContextLocal('')
 
     // const mockQuestions = Array.from({ length: 10 }, (_, i) => ({
     //   id: i + 1,
@@ -85,14 +83,14 @@ export default function GenerateQB() {
     // setQuestions(mockQuestions);
   };
 
-  const handleContextSubmit = () => {
-    setContent(contextLocal);
-    setContextLocal("");
-    alert("Context submitted successfully!");
-  };
+  // const handleContextSubmit = () => {
+  //   setContent(contextLocal);
+  //   setContextLocal("");
+  //   alert("Context submitted successfully!");
+  // };
 
   const disabledGeneratteBtn =
-    state?.content.length == 0 || complexity.length == 0 || levels.length == 0;
+  contextLocal.length == 0 || complexity.length == 0 || levels.length == 0;
 
   return (
     <div className="generateqb-container">
@@ -108,9 +106,9 @@ export default function GenerateQB() {
           rows={15}
           placeholder="Enter up to 500 lines of context here..."
         />
-        <button className="generateqb-button" onClick={handleContextSubmit}>
+        {/* <button className="generateqb-button" onClick={handleContextSubmit}>
           Submit Context
-        </button>
+        </button> */}
       </div>
 
       <div className="generateqb-controls">

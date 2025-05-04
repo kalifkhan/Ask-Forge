@@ -18,7 +18,7 @@ const initialState = {
   generateQuesComOpen: "",
 };
 
-export const QuestionGenProvide = ({ children }) => {
+export const QuestionGenProvider = ({ children }) => {
   const [state, dispatch] = useReducer(questionreducer, initialState);
 
   return (
