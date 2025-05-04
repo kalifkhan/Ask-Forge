@@ -1,0 +1,19 @@
+.generatebutton {
+    background-color: #1e3a8a; /* Green background */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 8px 15px; /* Padding inside the button */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Align it next to other inline elements */
+    font-size: 14px; /* Font size */
+    margin: 10px 0; /* Margin for spacing */
+    cursor: pointer; /* Pointer on hover */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth color change */
+  }
+  
+  button:hover {
+    background-color: #112661; /* Darker green on hover */
+  }
+  
