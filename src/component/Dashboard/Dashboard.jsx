@@ -5,7 +5,7 @@ import Questionreducer from "../ContextForQuestionGen/useQuestionActions";
 import Header from "../Header";
 import Sidebar, { menuItems } from "../Sidebar";
 import DashboardMain from "./DashboardMain";
-import QuestionGenerater from "../questionGenerater/QuestionGenerater";
+import GenerateQB from "../questionGenerater/QuestionGenerater";
 import EvaluteQB from "../questionGenerater/EvaluteQB";
 import Reports from "./Reports";
 import Interactive from "./Interactive";
@@ -13,14 +13,17 @@ import Interactive from "./Interactive";
 const Dashboard = () => {
   const { state } = useQuestionContext();
   const { updateTitle } = Questionreducer();
-  const { generateQuesComOpen } = state;
+  const { generateQuesComOpen, content } = state;
+  console.log(content);
+  console.log(state)
+
 
   const handleComponent = () => {
     switch (generateQuesComOpen) {
       case menuItems[0]:
         return <DashboardMain />;
       case menuItems[1]:
-        return <QuestionGenerater />;
+        return <GenerateQB />;
       case menuItems[2]:
         return <EvaluteQB />;
       case menuItems[3]:

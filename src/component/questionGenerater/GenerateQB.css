@@ -1,0 +1,98 @@
+.generateqb-container {
+    padding: 5px;
+    background-color: #f9fafb;
+  }
+  
+  .generateqb-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #1f2937;
+  }
+  
+  .generateqb-controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .generateqb-button {
+    padding: 8px 16px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .generateqb-button:hover {
+    background-color: #1e40af;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #d1d5db;
+    min-width: 160px;
+  }
+  
+  .level-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  
+  .level-button {
+    padding: 6px 12px;
+    border: 1px solid #d1d5db;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .level-button.active {
+    background-color: #2563eb;
+    color: white;
+    border-color: #2563eb;
+  }
+  
+  .question-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+  }
+  
+  .question-table th,
+  .question-table td {
+    border: 1px solid #e5e7eb;
+    padding: 8px 12px;
+    text-align: left;
+  }
+  
+  .question-table th {
+    background-color: #f3f4f6;
+    color: #111827;
+  }
+  
+  .generateqb-comment-box {
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .context-textarea {
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    resize: vertical;
+    font-family: monospace;
+  }
+  
