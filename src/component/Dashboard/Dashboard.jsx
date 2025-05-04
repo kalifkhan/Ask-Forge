@@ -14,9 +14,6 @@ const Dashboard = () => {
   const { state } = useQuestionContext();
   const { updateTitle } = Questionreducer();
   const { generateQuesComOpen, content } = state;
-  console.log(content);
-  console.log(state)
-
 
   const handleComponent = () => {
     switch (generateQuesComOpen) {

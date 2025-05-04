@@ -14,7 +14,7 @@ const initialState = {
   quesion: "",
   responseType: "Single",
   decsription: "write own contenct decsiption",
-  content: "full content",
+  content: "",
   generateQuesComOpen: "",
 };
 

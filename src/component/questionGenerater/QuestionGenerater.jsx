@@ -4,6 +4,51 @@ import ProficiencySelector from "./ProficiencySelector";
 import QuestionGrid from "./QuestionGrid";
 import "./GenerateQB.css";
 import useQuestionActions from "../ContextForQuestionGen/useQuestionActions";
+import { useQuestionContext } from "../ContextForQuestionGen/QuestionGenContext";
+
+function generatePromptFromPayload({ content, complexity, levels }) {
+  const levelDescriptions = {
+    L1: "Beginner - understands basic concepts and syntax.",
+    L2: "Intermediate - able to apply concepts and solve problems.",
+    L3: "Advanced - can design and optimize systems or processes.",
+    L4: "Expert - mastery level including edge cases, performance, and architecture.",
+  };
+
+  const levelSection = levels
+    .map((level) => `${level}: ${levelDescriptions[level]}`)
+    .join("\n");
+
+  return `
+You are a Subject Matter Expert (SME) helping to generate assessment questions.
+
+Context:
+${content}
+
+Instruction:
+Based on the above context, generate questions with the following requirements:
+- Complexity: ${complexity}
+- Proficiency Levels: ${levels.join(", ")}
+- Each level should have at least 3 unique questions.
+- Every set of 5 questions should include at least 1 Yes/No type question.
+- Each question should include answer options.
+- Avoid duplication, ensure variety in question types.
+
+Proficiency Level Definitions:
+${levelSection}
+
+Output:
+For each level, return questions in this format:
+{
+  "level": "L1",
+  "complexity": "${complexity}",
+  "question": "What is encapsulation in Java?",
+  "response_type": "Single/Multiple/YesNo",
+  "question_type": "Scenario/Syntax/Conceptual/etc.",
+  "options": ["Option A", "Option B", "Option C", "Option D"],
+  "correct_answer": "Option A"
+}
+`.trim();
+}
 
 export default function GenerateQB() {
   const [complexity, setComplexity] = useState("");
@@ -11,18 +56,33 @@ export default function GenerateQB() {
   const [questions, setQuestions] = useState([]);
   const [contextLocal, setContextLocal] = useState("");
   const { setContent } = useQuestionActions();
+  const { state } = useQuestionContext();
 
   console.log(levels);
-  console.log(complexity)
+  console.log(complexity);
+  console.log(state?.content.length);
 
   const handleGenerate = () => {
-    const mockQuestions = Array.from({ length: 10 }, (_, i) => ({
-      id: i + 1,
-      text: `Sample question ${i + 1} for ${complexity}`,
-      level: levels.join(", "),
-      complexity: ["Easy", "Medium", "Hard"][i % 3],
-    }));
-    setQuestions(mockQuestions);
+    const payloadOFApiCall = {
+      complexity: complexity ?? "Easy",
+      levels: levels ?? ["L1"],
+      content: state?.content,
+    };
+    //here generate prompts
+
+    const prompt = generatePromptFromPayload(payloadOFApiCall);
+
+    console.log("Generated Prompt:\n", prompt);
+    setComplexity("");
+    setLevels([]);
+
+    // const mockQuestions = Array.from({ length: 10 }, (_, i) => ({
+    //   id: i + 1,
+    //   text: `Sample question ${i + 1} for ${complexity}`,
+    //   level: levels.join(", "),
+    //   complexity: ["Easy", "Medium", "Hard"][i % 3],
+    // }));
+    // setQuestions(mockQuestions);
   };
 
   const handleContextSubmit = () => {
@@ -30,6 +90,9 @@ export default function GenerateQB() {
     setContextLocal("");
     alert("Context submitted successfully!");
   };
+
+  const disabledGeneratteBtn =
+    state?.content.length == 0 || complexity.length == 0 || levels.length == 0;
 
   return (
     <div className="generateqb-container">
@@ -53,7 +116,11 @@ export default function GenerateQB() {
       <div className="generateqb-controls">
         <ComplexitySelector value={complexity} onChange={setComplexity} />
         <ProficiencySelector selected={levels} onChange={setLevels} />
-        <button className="generateqb-button" onClick={handleGenerate}>
+        <button
+          className="generateqb-button"
+          onClick={handleGenerate}
+          disabled={disabledGeneratteBtn}
+        >
           Generate
         </button>
       </div>
