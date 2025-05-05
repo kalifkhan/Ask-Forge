@@ -10,8 +10,7 @@ const GenerateQueBank = (props) => {
   
     async function handlePostRequest() {
       const payload = {
-        context: "A lion is a large, powerful wild animal.",
-        prompt: "from this context just create one question, give me in one line, no explanation",
+        context: "A lion is a large, powerful wild animal.prompt. Promts:from this context just create one question, give me in one line, no explanation",
       };
     
       try {
@@ -30,11 +29,6 @@ const GenerateQueBank = (props) => {
         console.error('Error:', error); // Catch and log any errors
       }
     }
-    
-    console.log(res?.data?.kwargs?.content);
-
-
-
 
   return (
     <div

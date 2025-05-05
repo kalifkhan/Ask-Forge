@@ -6,7 +6,7 @@ import Header from "../Header";
 import Sidebar, { menuItems } from "../Sidebar";
 import DashboardMain from "./DashboardMain";
 import GenerateQB from "../questionGenerater/QuestionGenerater";
-import EvaluteQB from "../questionGenerater/EvaluteQB";
+import EvaluteQB from "../Evalute/EvaluteQB";
 import Reports from "./Reports";
 import Interactive from "./Interactive";
 
@@ -22,13 +22,13 @@ const Dashboard = () => {
       case menuItems[1]:
         return <GenerateQB />;
       case menuItems[2]:
-        return <EvaluteQB />;
+        return <EvaluteQB  />;
       case menuItems[3]:
         return <Reports />;
       case menuItems[4]:
         return <Interactive />;
       default:
-        return <DashboardMain />;
+        return <EvaluteQB />;
     }
   };
   return (

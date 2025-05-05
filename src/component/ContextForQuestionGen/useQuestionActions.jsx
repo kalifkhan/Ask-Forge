@@ -18,6 +18,8 @@ const useQuestionActions = () => {
   const setContent = (payload) => dispatch({ type: "SET_CONTENT", payload });
   const setGenareteOpen = (payload) =>
     dispatch({ type: "SET_generateQuesComOpen", payload });
+  const setQuestionList = (payload) =>
+    dispatch({ type: "SET_QUESTIONLIST", payload });
 
   return {
     setTitle,
@@ -30,6 +32,7 @@ const useQuestionActions = () => {
     setDescription,
     setContent,
     setGenareteOpen,
+    setQuestionList
   };
 };
 

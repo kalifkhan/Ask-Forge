@@ -16,6 +16,33 @@ const initialState = {
   decsription: "write own contenct decsiption",
   content: "",
   generateQuesComOpen: "",
+  questionList:[ {
+    "level": "L1",
+    "complexity": "Easy",
+    "question": "What type of animal is a lion?",
+    "response_type": "Multiple",
+    "question_type": "Conceptual",
+    "options": [
+        "A) Bird",
+        "B) Reptile",
+        "C) Mammal",
+        "D) Fish"
+    ],
+    "correct_answer": "C"
+},
+{
+    "level": "L1",
+    "complexity": "Easy",
+    "question": "Lions primarily communicate through body language and vocalizations.  True or False?",
+    "response_type": "YesNo",
+    "question_type": "Fact",
+    "options": [
+        "True",
+        "False"
+    ],
+    "correct_answer": "True"
+}
+],
 };
 
 export const QuestionGenProvider = ({ children }) => {

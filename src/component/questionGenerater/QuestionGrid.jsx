@@ -2,7 +2,7 @@ import React from 'react';
 import './GenerateQB.css';
 
 export default function QuestionGrid({ questions }) {
-  if (!questions.length) return null;
+  if (!questions?.length) return null;
 
   return (
     <table className="question-table">
@@ -15,10 +15,10 @@ export default function QuestionGrid({ questions }) {
         </tr>
       </thead>
       <tbody>
-        {questions.map((q) => (
-          <tr key={q.id}>
-            <td>{q.id}</td>
-            <td>{q.text}</td>
+        {questions?.map((q, index) => (
+          <tr key={index}>
+            <td>{index + 1}</td>
+            <td>{q.question}</td>
             <td>{q.level}</td>
             <td>{q.complexity}</td>
           </tr>

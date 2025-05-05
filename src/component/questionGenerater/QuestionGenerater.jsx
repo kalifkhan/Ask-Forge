@@ -1,62 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ComplexitySelector from "./ComplexitySelector";
 import ProficiencySelector from "./ProficiencySelector";
 import QuestionGrid from "./QuestionGrid";
 import "./GenerateQB.css";
 import useQuestionActions from "../ContextForQuestionGen/useQuestionActions";
 import { useQuestionContext } from "../ContextForQuestionGen/QuestionGenContext";
-
-function generatePromptFromPayload({ content, complexity, levels }) {
-  const levelDescriptions = {
-    L1: "Beginner - understands basic concepts and syntax.",
-    L2: "Intermediate - able to apply concepts and solve problems.",
-    L3: "Advanced - can design and optimize systems or processes.",
-    L4: "Expert - mastery level including edge cases, performance, and architecture.",
-  };
-
-  const levelSection = levels
-    .map((level) => `${level}: ${levelDescriptions[level]}`)
-    .join("\n");
-
-  return `
-You are a Subject Matter Expert (SME) helping to generate assessment questions.
-
-Context:
-${content}
-
-Instruction:
-Based on the above context, generate questions with the following requirements:
-- Complexity: ${complexity}
-- Proficiency Levels: ${levels.join(", ")}
-- Each level should have at least 3 unique questions.
-- Every set of 5 questions should include at least 1 Yes/No type question.
-- Each question should include answer options.
-- Avoid duplication, ensure variety in question types.
-
-Proficiency Level Definitions:
-${levelSection}
-
-Output:
-For each level, return questions in this format:
-{
-  "level": "L1",
-  "complexity": "${complexity}",
-  "question": "What is encapsulation in Java?",
-  "response_type": "Single/Multiple/YesNo",
-  "question_type": "Scenario/Syntax/Conceptual/etc.",
-  "options": ["Option A", "Option B", "Option C", "Option D"],
-  "correct_answer": "Option A"
-}
-`.trim();
-}
+import useFetchQuestionOfAi from "../customeHooks/useFetchQuestionOfAi";
+import generatePromptFromPayload from "../customeHooks/useGeneratePromptFromPayload";
 
 export default function GenerateQB() {
   const [complexity, setComplexity] = useState("");
   const [levels, setLevels] = useState([]);
-  const [questions, setQuestions] = useState([]);
   const [contextLocal, setContextLocal] = useState("");
-  const { setContent } = useQuestionActions();
+  const { setContent, setQuestionList } = useQuestionActions();
   const { state } = useQuestionContext();
+  const { generateQuesComOpen, content, description, questionList } = state;
+  const [promtsGen, setPromtsGen] = useState();
+  const { handleQuestiongGenRequest, responseOfData, loading, error } =
+    useFetchQuestionOfAi();
 
   const handleGenerate = () => {
     setContent(contextLocal);
@@ -65,32 +26,40 @@ export default function GenerateQB() {
       levels: levels ?? ["L1"],
       content: contextLocal,
     };
-    //here generate prompts
 
+    //here generate prompts
     const prompt = generatePromptFromPayload(payloadOFApiCall);
+    setPromtsGen(prompt);
 
     console.log("Generated Prompt:\n", prompt);
     setComplexity("");
     setLevels([]);
-    setContextLocal('')
-
-    // const mockQuestions = Array.from({ length: 10 }, (_, i) => ({
-    //   id: i + 1,
-    //   text: `Sample question ${i + 1} for ${complexity}`,
-    //   level: levels.join(", "),
-    //   complexity: ["Easy", "Medium", "Hard"][i % 3],
-    // }));
-    // setQuestions(mockQuestions);
+    setContextLocal("");
   };
 
-  // const handleContextSubmit = () => {
-  //   setContent(contextLocal);
-  //   setContextLocal("");
-  //   alert("Context submitted successfully!");
-  // };
+  const handleAIApi = () => {
+    handleQuestiongGenRequest({ context: promtsGen });
+  };
+  useEffect(() => {
+    if (responseOfData?.data?.kwargs?.content) {
+      try {
+        // Extract JSON string from content
+        const match =
+          responseOfData.data.kwargs.content.match(/```json([\s\S]*?)```/);
+        const jsonString = match ? match[1].trim() : null;
+
+        if (!jsonString) throw new Error("No JSON block found");
+
+        const parsedQuestions = JSON.parse(jsonString);
+        setQuestionList(parsedQuestions);
+      } catch (error) {
+        console.error("Error parsing questions:", error);
+      }
+    }
+  }, [responseOfData]);
 
   const disabledGeneratteBtn =
-  contextLocal.length == 0 || complexity.length == 0 || levels.length == 0;
+    contextLocal.length == 0 || complexity.length == 0 || levels.length == 0;
 
   return (
     <div className="generateqb-container">
@@ -114,16 +83,37 @@ export default function GenerateQB() {
       <div className="generateqb-controls">
         <ComplexitySelector value={complexity} onChange={setComplexity} />
         <ProficiencySelector selected={levels} onChange={setLevels} />
-        <button
+       <div>  <button
           className="generateqb-button"
           onClick={handleGenerate}
           disabled={disabledGeneratteBtn}
         >
-          Generate
+          Generate Promts
         </button>
+        </div>
       </div>
+      <div>
+        {promtsGen ? ( <div style={{display:"flex",flexDirection:"column", justifyContent:"center", alignItems:"center", gap:"10px"}}>
+          <span style={{color:"#2563eb", fontWeight:"700"}}>Promts is geneareted successfully! </span>
+          
+          <button
+            style={{width:"100%"}}
+            className="generateqb-button"
+            onClick={() => {
+              handleAIApi();
+            }}
+            disabled={loading }
+          >
+            Generate Question Bank
+          </button>
+          {loading ? <div><span style={{color:"#2563eb", fontWeight:"700"}}> Loading....... </span></div> : null}
+          </div>
+        ) : null}
+        
+      </div>
+      
 
-      <QuestionGrid questions={questions} />
+      <QuestionGrid questions={questionList} />
     </div>
   );
 }

@@ -9,24 +9,20 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/submit", async (req, res) => {
-  const { prompt, context } = req.body; // Expecting both prompt and context in the request body
+  const {context } = req.body; // Expecting both prompt and context in the request body
 
   // Ensure both prompt and context are provided
-  if (!prompt || !context) {
+  if (!context) {
     return res
       .status(400)
-      .json({ message: "Both prompt and context are required." });
+      .json({ message:  "context are required." });
   }
-
-  console.log("Received prompt:", prompt);
   console.log("Received context:", context);
 
   try {
     // Call the generateReview function to get the response
-    const response = await generateReview(prompt, context);
-
-    // Log the full response to see its structure
-    console.log("Full response:", response);
+    const response = await generateReview( context);
+    
     res.json({ message: "Content is received", data: response });
   } catch (error) {
     // Improved error handling

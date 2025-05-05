@@ -20,6 +20,8 @@ export const questionreducer = (state, action) => {
       return { ...state, content: action.payload };
     case "SET_generateQuesComOpen":
       return { ...state, generateQuesComOpen: action.payload };
+    case "SET_QUESTIONLIST":
+       return { ...state, questionList: action.payload };
     default:
       return state;
   }
