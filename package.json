@@ -1,11 +1,17 @@
 {
+  "type": "module",
   "name": "codespaces-react",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@langchain/core": "^0.3.51",
+    "@langchain/ollama": "^0.2.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "langchain": "^0.3.24",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.5.3",

@@ -1,9 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Generate.css";
 
 const GenerateQueBank = (props) => {
   const { title, iconComponent, description, cardbtn, cardBtntext, count } =
     props;
+
+    const [res, setRes]= useState();
+
+  
+    async function handlePostRequest() {
+      const payload = {
+        context: "A lion is a large, powerful wild animal.",
+        prompt: "from this context just create one question, give me in one line, no explanation",
+      };
+    
+      try {
+        const response = await fetch('http://localhost:3001/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload), // Send the payload as JSON
+        });
+    
+        const data = await response.json();
+        console.log('Server Response:', data); // Log the server's response
+        setRes(data)
+      } catch (error) {
+        console.error('Error:', error); // Catch and log any errors
+      }
+    }
+    
+    console.log(res?.data?.kwargs?.content);
+
+
+
 
   return (
     <div
@@ -36,10 +67,17 @@ const GenerateQueBank = (props) => {
       >
         {description}
       </div>
-  
+
       <div>
         {cardbtn ? (
-          <button className="generatebutton">{cardBtntext}</button>
+          <button
+            className="generatebutton"
+            onClick={() => {
+              handlePostRequest();
+            }}
+          >
+            {cardBtntext}
+          </button>
         ) : null}
       </div>
     </div>
