@@ -1,32 +1,17 @@
 import React, { useState } from "react";
 import "./Generate.css";
+import useQuestionActions from "../ContextForQuestionGen/useQuestionActions";
 
 const GenerateQueBank = (props) => {
   const { title, iconComponent, description, cardbtn, cardBtntext, count } =
     props;
+    const { setGenareteOpen } = useQuestionActions();
 
-    const [res, setRes]= useState();
-
-  
-    async function handlePostRequest() {
-      const payload = {
-        context: "A lion is a large, powerful wild animal.prompt. Promts:from this context just create one question, give me in one line, no explanation",
-      };
-    
-      try {
-        const response = await fetch('http://localhost:3001/submit', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload), // Send the payload as JSON
-        });
-    
-        const data = await response.json();
-        console.log('Server Response:', data); // Log the server's response
-        setRes(data)
-      } catch (error) {
-        console.error('Error:', error); // Catch and log any errors
+    async function handlePostRequest(cardBtntext) {
+      if(cardBtntext === "Generate"){
+        setGenareteOpen("Generate QB")
+      }else if(cardBtntext === "Evalute"){
+        setGenareteOpen("Evaluate QB")
       }
     }
 
@@ -67,7 +52,7 @@ const GenerateQueBank = (props) => {
           <button
             className="generatebutton"
             onClick={() => {
-              handlePostRequest();
+              handlePostRequest(cardBtntext);
             }}
           >
             {cardBtntext}

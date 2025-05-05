@@ -22,13 +22,13 @@ const Dashboard = () => {
       case menuItems[1]:
         return <GenerateQB />;
       case menuItems[2]:
-        return <EvaluteQB  />;
+        return <EvaluteQB />;
       case menuItems[3]:
         return <Reports />;
       case menuItems[4]:
         return <Interactive />;
       default:
-        return <EvaluteQB />;
+        return <DashboardMain />;
     }
   };
   return (
