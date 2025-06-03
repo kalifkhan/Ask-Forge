@@ -18,7 +18,7 @@ This project is a React-based web application that allows users to **generate** 
 * State Management: **React Context API**
 * Hosting Recommendation: **Vercel** (or Netlify)
 
-## 🛠️ How It Works
+## 🛠️ How It Works - check out
 
 1. User selects a topic and difficulty.
 2. The app sends the request to OpenAI to generate a set of questions.
